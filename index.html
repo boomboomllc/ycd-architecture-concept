@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>YC+D Architecture — Concept Draft</title>
+<meta name="description" content="Concept redesign draft for YC+D Architecture. Not the official site.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@200;300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#111;
+  --paper:#f6f5f2;
+  --white:#fff;
+  --line:rgba(17,17,17,.14);
+  --muted:#6b6b68;
+  --plus:#e3a32b;
+  --grid:rgba(17,17,17,.045);
+  --pad:clamp(16px,4vw,56px);
+  --sans:"Inter Tight",Arial,Helvetica,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-weight:300;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+.plus{color:var(--plus)}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+
+/* concept notice */
+.notice{background:var(--ink);color:#cfcfcb;text-align:center;padding:8px var(--pad);font-family:var(--mono);font-size:11px;letter-spacing:.06em}
+.notice a{color:#fff;border-bottom:1px solid #666}
+
+/* nav */
+header{position:sticky;top:0;z-index:20;background:rgba(246,245,242,.86);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:14px var(--pad)}
+.logo{display:flex;align-items:baseline;gap:10px}
+.logo b{font-weight:300;font-size:30px;letter-spacing:-.02em;line-height:1}
+.logo small{font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+.nav ul{display:flex;gap:clamp(16px,3vw,40px);list-style:none}
+.nav ul a{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;position:relative;padding:4px 0}
+.nav ul a::after{content:"";position:absolute;left:0;bottom:-2px;height:1px;width:0;background:var(--plus);transition:width .3s}
+.nav ul a:hover::after{width:100%}
+@media(max-width:720px){.nav ul{display:none}}
+
+/* hero */
+.hero{position:relative;height:min(88vh,860px);min-height:520px;overflow:hidden;background:#222}
+.hero img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05);transform:scale(1.04);animation:settle 2.4s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes settle{to{transform:scale(1)}}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 30%,rgba(0,0,0,.6))}
+.hero-copy{position:absolute;z-index:2;left:var(--pad);right:var(--pad);bottom:clamp(28px,6vw,72px);color:#fff;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end}
+.hero h1{font-weight:200;font-size:clamp(40px,7.4vw,112px);line-height:.95;letter-spacing:-.035em;max-width:12ch}
+.hero .meta{text-align:right;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;line-height:2;opacity:.85}
+@media(max-width:720px){.hero-copy{grid-template-columns:1fr}.hero .meta{text-align:left}}
+.crosshair{position:absolute;z-index:2;width:22px;height:22px}
+.crosshair::before,.crosshair::after{content:"";position:absolute;background:rgba(255,255,255,.7)}
+.crosshair::before{left:10px;top:0;width:1px;height:22px}
+.crosshair::after{top:10px;left:0;height:1px;width:22px}
+
+/* sections */
+section{padding:clamp(72px,10vw,140px) var(--pad);position:relative}
+.gridbg{background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:32px 32px}
+.sec-head{display:grid;grid-template-columns:minmax(120px,1fr) 3fr;gap:24px;border-top:1px solid var(--ink);padding-top:18px;margin-bottom:clamp(40px,6vw,80px)}
+.sec-head h2{font-weight:300;font-size:clamp(28px,3.6vw,52px);letter-spacing:-.03em;line-height:1.05}
+@media(max-width:720px){.sec-head{grid-template-columns:1fr}}
+
+.statement{font-weight:200;font-size:clamp(26px,3.4vw,48px);line-height:1.18;letter-spacing:-.025em;max-width:22ch}
+.statement em{font-style:normal;color:var(--muted)}
+.intro{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,96px);align-items:end}
+.intro p{color:#3a3a38;max-width:52ch;font-size:17px}
+.badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.badge{border:1px solid var(--ink);padding:7px 12px;font-family:var(--mono);font-size:11px;letter-spacing:.12em}
+@media(max-width:820px){.intro{grid-template-columns:1fr}}
+
+/* work */
+.work{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(12px,1.6vw,24px)}
+.proj{grid-column:span 4;position:relative;cursor:default}
+.proj.wide{grid-column:span 8}
+.proj figure{overflow:hidden;background:#ddd;aspect-ratio:4/3}
+.proj.wide figure{aspect-ratio:16/9.1}
+.proj img{width:100%;height:100%;object-fit:cover;filter:grayscale(1);transition:transform 1s cubic-bezier(.2,.7,.2,1),filter .6s}
+.proj:hover img{transform:scale(1.045);filter:grayscale(.15)}
+.proj .cap{display:flex;justify-content:space-between;gap:12px;padding-top:12px;border-top:1px solid var(--line);margin-top:12px}
+.proj h3{font-weight:400;font-size:17px;letter-spacing:-.01em;text-transform:lowercase}
+.proj .cap span{color:var(--muted)}
+@media(max-width:900px){.proj,.proj.wide{grid-column:span 6}}
+@media(max-width:560px){.proj,.proj.wide{grid-column:span 12}}
+
+/* process */
+.dark{background:var(--ink);color:#eceae4}
+.dark .sec-head{border-color:#eceae4}
+.dark .mono.lab{color:#8f8e89}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);border-left:1px solid rgba(255,255,255,.16)}
+.step{border-right:1px solid rgba(255,255,255,.16);padding:0 clamp(14px,1.6vw,24px) 8px}
+.step figure{aspect-ratio:1/1;overflow:hidden;margin-bottom:22px;background:#222}
+.step img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05);opacity:.9;transition:opacity .4s}
+.step:hover img{opacity:1}
+.step .n{font-family:var(--mono);font-size:11px;color:var(--plus);letter-spacing:.14em}
+.step h3{font-weight:300;font-size:26px;letter-spacing:-.02em;margin:6px 0 4px}
+.step .where{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#8f8e89;margin-bottom:12px}
+.step p{font-size:15px;color:#bdbbb5}
+@media(max-width:980px){.steps{grid-template-columns:1fr 1fr;row-gap:48px}}
+@media(max-width:560px){.steps{grid-template-columns:1fr}}
+
+/* services */
+.svc{list-style:none;border-top:1px solid var(--line)}
+.svc li{display:grid;grid-template-columns:70px 1.1fr 1.4fr;gap:24px;padding:26px 0;border-bottom:1px solid var(--line);align-items:baseline;transition:padding .35s}
+.svc li:hover{padding-left:12px}
+.svc .n{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.svc li:hover .n{color:var(--plus)}
+.svc h3{font-weight:300;font-size:clamp(20px,2.2vw,30px);letter-spacing:-.02em;line-height:1.15}
+.svc p{color:#4a4a47}
+@media(max-width:760px){.svc li{grid-template-columns:44px 1fr}.svc p{grid-column:2}}
+.nimble{margin-top:clamp(56px,8vw,100px);display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,96px)}
+.nimble h3{font-weight:200;font-size:clamp(34px,4.6vw,64px);letter-spacing:-.035em;line-height:1}
+.nimble p{font-size:17px;color:#3a3a38;max-width:50ch}
+@media(max-width:820px){.nimble{grid-template-columns:1fr}}
+
+/* studio */
+.people{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,64px)}
+.person{display:grid;grid-template-columns:minmax(140px,.8fr) 1.2fr;gap:clamp(18px,2.4vw,32px)}
+.person figure{aspect-ratio:3/4;overflow:hidden;background:#ddd}
+.person img{width:100%;height:100%;object-fit:cover;filter:grayscale(1)}
+.person h3{font-weight:300;font-size:30px;letter-spacing:-.02em;line-height:1.05}
+.person .role{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:8px 0 16px}
+.person p{font-size:15px;color:#3a3a38;margin-bottom:10px}
+.person .creds{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted);border-top:1px solid var(--line);padding-top:10px;margin-top:14px}
+@media(max-width:1000px){.people{grid-template-columns:1fr}}
+@media(max-width:520px){.person{grid-template-columns:1fr}.person figure{max-width:260px}}
+
+/* contact */
+.contact{background:var(--white)}
+.cta{font-weight:200;font-size:clamp(44px,8vw,128px);letter-spacing:-.045em;line-height:.92}
+.cta a{border-bottom:2px solid var(--ink);transition:color .3s,border-color .3s}
+.cta a:hover{color:var(--plus);border-color:var(--plus)}
+.ctab{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:clamp(48px,7vw,96px);border-top:1px solid var(--ink);padding-top:18px}
+.ctab div p{font-size:18px;margin-top:6px}
+.ctab .mono{color:var(--muted)}
+@media(max-width:720px){.ctab{grid-template-columns:1fr}}
+
+footer{padding:28px var(--pad);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted);border-top:1px solid var(--line);background:var(--white)}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}.hero img{animation:none;transform:none}}
+</style>
+</head>
+<body>
+
+<div class="notice">Concept redesign draft — not the official YC+D site · Official site: <a href="https://www.ycplusd.com">ycplusd.com</a></div>
+
+<header>
+  <nav class="nav">
+    <a class="logo" href="#top" aria-label="YC+D Architecture"><b>yc<span class="plus">+</span>d</b><small>Architecture</small></a>
+    <ul>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#studio">Studio</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <img src="https://static.wixstatic.com/media/db79f4_5cc83ce6942a4991aed97cad11437842~mv2.jpg/v1/fill/w_2400,h_1400,al_c,q_85,enc_auto/hero.jpg" alt="Light-filled office interior designed by YC+D">
+    <span class="crosshair" style="top:28px;left:var(--pad)"></span>
+    <span class="crosshair" style="top:28px;right:var(--pad)"></span>
+    <div class="hero-copy">
+      <h1>Intentional, technical, quietly&nbsp;bold.</h1>
+      <div class="meta">Architecture · Interiors · Consulting<br>San Francisco Bay Area<br>Walnut Creek, CA</div>
+    </div>
+  </div>
+
+  <section class="gridbg">
+    <div class="intro">
+      <p class="statement rv">Conceptual clarity is the basis for a singular vision <em>that drives strong project execution.</em></p>
+      <div class="rv">
+        <p>Based in the San Francisco Bay Area, YC+D Architecture provides a full range of architectural design and consulting services to diverse clients and project scales — from schools and multi-family housing to corporate interiors and manufacturing.</p>
+        <div class="badges"><span class="badge">SBE</span><span class="badge">MBE</span><span class="badge">WBE</span><span class="badge">Minority &amp; Women-Owned</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="sec-head rv"><span class="mono lab">01 — Work</span><h2>Selected projects</h2></div>
+    <div class="work">
+      <article class="proj wide rv"><figure><img loading="lazy" src="https://static.wixstatic.com/media/db79f4_59e001b3d39d4bc78e53806a2960f47e~mv2.jpg/v1/fill/w_1600,h_910,al_c,q_85,enc_auto/p.jpg" alt="San Mateo mixed use"></figure><div class="cap"><h3>san mateo mixed use</h3><span class="mono">Multi-family</span></div></article>
+      <article class="proj rv"><figure><img loading="lazy" src="https://static.wixstatic.com/media/db79f4_1198444bbc0a48ecb1979e0eb10d817a~mv2.jpg/v1/fill/w_900,h_675,al_c,q_85,enc_auto/p.jpg" alt="San Benito High School"></figure><div class="cap"><h3>san benito high school</h3><span class="mono">Education</span></div></article>
+      <article class="proj rv"><figure><img loading="lazy" src="https://static.wixstatic.com/media/db79f4_2eab10003317437ebe367557c16dd113~mv2.jpg/v1/fill/w_900,h_675,al_c,q_85,enc_auto/p.jpg" alt="California office"></figure><div class="cap"><h3>california office</h3><span class="mono">Workplace</span></div></article>
+      <article class="proj rv"><figure><img loading="lazy" src="https://static.wixstatic.com/media/db79f4_55c2532d8dde4d9fb77502e585725205~mv2.jpg/v1/fill/w_900,h_675,al_c,q_85,enc_auto/p.jpg" alt="Texas office"></figure><div class="cap"><h3>texas office</h3><span class="mono">Workplace</span></div></article>
+      <article class="proj rv"><figure><img loading="lazy" src="https://static.wixstatic.com/media/db79f4_e43d7cfa5c5849278526fc63e86f61df~mv2.jpg/v1/fill/w_900,h_675,al_c,q_85,enc_auto/p.jpg" alt="Walnut Creek residence"></figure><div class="cap"><h3>walnut creek residence</h3><span class="mono">Residential</span></div></article>
+      <article class="proj rv"><figure><img loading="lazy" src="https://static.wixstatic.com/media/db79f4_9c0061cf176b4151965178030214df2c~mv2.jpg/v1/fill/w_900,h_675,al_c,q_85,enc_auto/p.jpg" alt="Sunnyvale residence"></figure><div class="cap"><h3>sunnyvale residence</h3><span class="mono">Residential</span></div></article>
+      <article class="proj wide rv"><figure><img loading="lazy" src="https://static.wixstatic.com/media/db79f4_1229bb5f6329421c8deb1d96e015f733~mv2.jpg/v1/fill/w_1600,h_910,al_c,q_85,enc_auto/p.jpg" alt="Los Angeles retail"></figure><div class="cap"><h3>los angeles retail</h3><span class="mono">Retail</span></div></article>
+      <article class="proj rv"><figure><img loading="lazy" src="https://static.wixstatic.com/media/db79f4_94684363d46d4990b10e119a13d96165~mv2.jpg/v1/fill/w_900,h_675,al_c,q_85,enc_auto/p.jpg" alt="Manufacturing facility"></figure><div class="cap"><h3>manufacturing facility</h3><span class="mono">Industrial</span></div></article>
+    </div>
+  </section>
+
+  <section id="process" class="dark">
+    <div class="sec-head rv"><span class="mono lab">02 — Process</span><h2>Full integration of building systems from the onset — eliminating waste and inefficiency downstream.</h2></div>
+    <div class="steps">
+      <div class="step rv"><figure><img loading="lazy" src="https://static.wixstatic.com/media/f52a2f_e8342a8607ad451982f82651a80c96ca~mv2.jpg/v1/fill/w_700,h_700,al_c,q_85,enc_auto/p.jpg" alt="Componentized ceiling and wall system"></figure><span class="n">/01</span><h3>Detailed &amp; specific</h3><div class="where">Texas office</div><p>A componentized ceiling and wall system as backdrop for a corporate brand installation, with fabrication and installation guidelines produced by YC+D.</p></div>
+      <div class="step rv"><figure><img loading="lazy" src="https://static.wixstatic.com/media/f52a2f_18cad3307bc84d1ba2c1c420715191b7~mv2.jpg/v1/fill/w_700,h_700,al_c,q_85,enc_auto/p.jpg" alt="Kit-of-parts building prototype"></figure><span class="n">/02</span><h3>Optimized</h3><div class="where">Platform optimization</div><p>Architectural and structural system optimization for a more efficient kit-of-parts building prototype.</p></div>
+      <div class="step rv"><figure><img loading="lazy" src="https://static.wixstatic.com/media/db79f4_5ff89a295357416c94af235c9ef4ee18~mv2.jpg/v1/fill/w_700,h_700,al_c,q_85,enc_auto/p.jpg" alt="San Mateo shear wall model"></figure><span class="n">/03</span><h3>Coordinated</h3><div class="where">San Mateo mixed use</div><p>Maximized density on a narrow site: a combined architectural, structural and landscape solution — Type III over a concrete podium and subterranean parking.</p></div>
+      <div class="step rv"><figure><img loading="lazy" src="https://static.wixstatic.com/media/f52a2f_9275d75aff84466b847665602f034fc2~mv2.jpg/v1/fill/w_700,h_700,al_c,q_85,enc_auto/p.jpg" alt="Manufacturing facility structure"></figure><span class="n">/04</span><h3>Scalable</h3><div class="where">Manufacturing facility</div><p>A fast-track project with a repeatable structural system and composite wall panels designed for rapid expansion.</p></div>
+    </div>
+  </section>
+
+  <section id="services" class="gridbg">
+    <div class="sec-head rv"><span class="mono lab">03 — Services</span><h2>Design, detailing, coordination and construction — under one roof.</h2></div>
+    <ul class="svc">
+      <li class="rv"><span class="n">01</span><h3>Pre-design &amp; feasibility</h3><p>Clarity on scope, cost, timeline and potential challenges before you commit.</p></li>
+      <li class="rv"><span class="n">02</span><h3>Comprehensive architectural design</h3><p>From schematic design through construction documents and construction administration.</p></li>
+      <li class="rv"><span class="n">03</span><h3>Design management &amp; consulting</h3><p>Technical expertise and design insight on large, complex projects.</p></li>
+      <li class="rv"><span class="n">04</span><h3>Interior design</h3><p>Spatial concepts through custom millwork, finishes, and FF&amp;E selection and coordination.</p></li>
+      <li class="rv"><span class="n">05</span><h3>Multidisciplinary coordination</h3><p>BIM-driven coordination with design and engineering teams.</p></li>
+      <li class="rv"><span class="n">06</span><h3>Building systems integration</h3><p>Managing design, documents, fabrication and installation as one connected system.</p></li>
+      <li class="rv"><span class="n">07</span><h3>Strategic initiatives</h3><p>Harnessing data to implement program-level strategy and optimize design and construction.</p></li>
+    </ul>
+    <div class="nimble">
+      <h3 class="rv">We are <span class="plus">nimble.</span></h3>
+      <p class="rv">We address hard design problems through a systematic design approach, leveraging technology to manage end-to-end design and delivery geared toward scalability and growth. Smaller teams, complex projects — big impact for individual and corporate clients alike.</p>
+    </div>
+  </section>
+
+  <section id="studio">
+    <div class="sec-head rv"><span class="mono lab">04 — Studio</span><h2>Architecture is both intentional and dynamic.</h2></div>
+    <div class="people">
+      <div class="person rv">
+        <figure><img loading="lazy" src="https://static.wixstatic.com/media/db79f4_56af0c7100a44a1e88cf569f947ea67b~mv2.jpg/v1/crop/x_1648,y_650,w_750,h_1499/fill/w_600,h_800,al_c,q_85,enc_auto/yen.jpg" alt="Yen Chen"></figure>
+        <div>
+          <h3>Yen Chen, AIA</h3><div class="role">Founder / Principal</div>
+          <p>Over 15 years designing and managing complex, high-profile domestic and international projects — schools, multi-family housing, private residences, commercial interiors and cultural institutions.</p>
+          <p>Yen helps clients not only realize their building vision, but discover serendipity in the process.</p>
+          <div class="creds">Harvard University · Yale School of Architecture · Licensed in California</div>
+        </div>
+      </div>
+      <div class="person rv">
+        <figure><img loading="lazy" src="https://static.wixstatic.com/media/db79f4_f4b1bb5691554ff29e00d99030fed19c~mv2.jpg/v1/crop/x_186,y_11,w_2010,h_2713/fill/w_600,h_800,al_c,q_85,enc_auto/dara.jpg" alt="Dara Douraghi"></figure>
+        <div>
+          <h3>Dara Douraghi, AIA</h3><div class="role">Principal</div>
+          <p>Over 15 years as an architect across theme parks, federal and educational projects. Dara leads design, implementation and delivery, along with business development and key accounts.</p>
+          <p>He believes collaboration and technology-informed design solve many of construction's most common problems.</p>
+          <div class="creds">Georgia Tech · UC Berkeley · Licensed in California</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <span class="mono" style="color:var(--muted)">05 — Contact</span>
+    <p class="cta rv" style="margin-top:24px">Let's talk about<br>your next <a href="mailto:hello@ycplusd.com">project<span class="plus">.</span></a></p>
+    <div class="ctab">
+      <div><span class="mono">Email</span><p><a href="mailto:hello@ycplusd.com">hello@ycplusd.com</a></p></div>
+      <div><span class="mono">Phone</span><p><a href="tel:+19259795178">+1 925 979 5178</a></p></div>
+      <div><span class="mono">Studio</span><p>Walnut Creek, California</p></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>© YC+D Architecture</span>
+  <span>Concept draft by BoomBoom — not affiliated with or published by YC+D</span>
+</footer>
+
+<script>
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rv').forEach((el,i)=>{el.style.transitionDelay=(i%4)*70+'ms';io.observe(el)});
+</script>
+</body>
+</html>
